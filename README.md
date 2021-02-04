@@ -27,5 +27,5 @@ If you're using [Visual Studio Code](https://code.visualstudio.com/) we recommen
 
 ## Todo
 
-Check out the Trello Kanban Board for work [Workflow Trello Board](https://trello.com/b/hj6jsEPU/workflow)
+Jump over to the [Projects Section](https://github.com/brittneypostma/workflow/projects/1) to see the list of todo's and progress.
 
