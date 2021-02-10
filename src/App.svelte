@@ -1,8 +1,17 @@
 <script>
+  import DarkModeButton from './components/darkModeButton.svelte'
+  import { onMount } from 'svelte'
+  import { getLocalTheme, themes } from './services/localTheme'
   export let name
+  onMount(() => {
+    if (getLocalTheme() === themes.dark) {
+      window.document.body.classList.add('dark')
+    }
+  })
 </script>
 
 <main class="bg-white dark:bg-black text-black dark:text-white">
+  <DarkModeButton>Toggle</DarkModeButton>
   <h1 class="text-7xl">Hello {name}!</h1>
   <p>
     Tailwind is working in this project, let's get started on <br />
