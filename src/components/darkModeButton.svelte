@@ -1,5 +1,5 @@
 <script>
-  import { toggleTheme } from '../services/localTheme'
+  import { toggleTheme } from '../services/persistedTheme'
   function toggle() {
     window.document.body.classList.toggle('dark')
     toggleTheme()

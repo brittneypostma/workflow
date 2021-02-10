@@ -2,7 +2,7 @@
   import DarkModeButton from './components/darkModeButton.svelte'
   import ToggleDarkMode from './components/darkModeToggleSwitch.svelte'
   import { onMount } from 'svelte'
-  import { getLocalTheme, themes } from './services/localTheme'
+  import { getLocalTheme, themes } from './services/persistedTheme'
   export let name
   let isDarkMode = false
   onMount(() => {

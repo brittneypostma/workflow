@@ -1,5 +1,5 @@
 <script>
-  import { toggleTheme } from '../services/localTheme'
+  import { toggleTheme } from '../services/persistedTheme'
   import ToggleSwitch from './toggleSwitch.svelte'
   export let isDarkMode
   function toggle() {
