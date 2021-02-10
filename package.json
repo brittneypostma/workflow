@@ -22,12 +22,15 @@
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
+    "stylelint": "^13.9.0",
+    "stylelint-config-standard": "^20.0.0",
     "svelte": "^3.0.0",
+    "svelte-preprocess": "^4.6.6",
     "tailwindcss": "^2.0.2"
   },
   "dependencies": {
     "sirv-cli": "^1.0.0"
-  }, 
+  },
   "eslintConfig": {
     "env": {
       "browser": true,
@@ -38,23 +41,51 @@
       "ecmaVersion": 2019,
       "sourceType": "module"
     },
-    "plugins": ["svelte3"],
-    "extends": ["eslint:recommended"],
+    "plugins": [
+      "svelte3"
+    ],
+    "extends": [
+      "eslint:recommended"
+    ],
     "overrides": [
       {
-        "files": ["**/*.svelte"],
+        "files": [
+          "**/*.svelte"
+        ],
         "processor": "svelte3/svelte3"
       }
     ],
-    "rules": {
-    }
+    "rules": {}
   },
   "prettier": {
     "tabWidth": 2,
     "semi": false,
     "singleQuote": true,
     "trailingComma": "es5",
-    "plugins": ["prettier-plugin-svelte"],
-    "svelteSortOrder" : "scripts-markup-styles"
+    "plugins": [
+      "prettier-plugin-svelte"
+    ],
+    "svelteSortOrder": "scripts-markup-styles"
+  },
+  "stylelint": {
+    "extends": [
+      "stylelint-config-standard"
+    ],
+    "rules": {
+      "at-rule-no-unknown": [
+        true,
+        {
+          "ignoreAtRules": [
+            "tailwind",
+            "apply",
+            "variants",
+            "responsive",
+            "screen"
+          ]
+        }
+      ],
+      "declaration-block-trailing-semicolon": null,
+      "no-descending-specificity": null
+    }
   }
 }

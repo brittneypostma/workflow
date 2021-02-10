@@ -6,17 +6,12 @@
   }
 </script>
 
-<button on:click={toggle}>
+<button on:click={toggle} class="dark:bg-gray-400 dark:text-gray-900">
   <slot />
 </button>
 
 <style>
   button {
-    background-color: #f76027;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 0.5rem;
-    text-transform: uppercase;
+    @apply bg-yellow-500 text-white border-none rounded p-2 uppercase;
   }
 </style>

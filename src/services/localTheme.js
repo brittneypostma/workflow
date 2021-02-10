@@ -17,7 +17,9 @@ function setInitialTheme(){
 function setTheme(theme){
     localStorage.setItem(themeKey, theme)
 }
-
+export function isDarkMode(){
+    return getLocalTheme() === themes.dark
+}
 export function getLocalTheme(){
      return localStorage.getItem(themeKey) ? localStorage.getItem(themeKey) : setInitialTheme()
 }
