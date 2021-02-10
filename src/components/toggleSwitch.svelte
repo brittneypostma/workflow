@@ -17,7 +17,9 @@
       on:click
     />
     <div class="track" />
-    <div class="thumb" />
+    <div class="thumb">
+      <slot name="icon" />
+    </div>
   </div>
   <span class="ml-2 cursor-pointer">{text}</span>
 </label>
@@ -32,15 +34,15 @@
   }
 
   .thumb {
-    @apply transition-all duration-300 ease-in-out absolute top-0 left-0 w-6 h-6 bg-white border-2 border-gray-600 rounded-full;
+    @apply p-1 transition-all duration-300 ease-in-out absolute top-0 left-0 w-6 h-6 bg-white border-2 border-gray-600 rounded-full;
   }
 
   input[type='checkbox']:checked ~ .thumb {
-    @apply transform translate-x-full border-green-500;
+    @apply transform translate-x-full border-black bg-gray-500;
   }
 
   input[type='checkbox']:checked ~ .track {
-    @apply transform transition-colors bg-green-500;
+    @apply transform transition-colors bg-gray-200;
   }
 
   input[type='checkbox']:disabled ~ .track {
