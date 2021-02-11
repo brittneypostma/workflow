@@ -1,13 +1,28 @@
 <script>
   import { deleteKanbanColumn } from '../store/board.store'
-  import { slide } from 'svelte/transition'
-  import ColumnTitle from './column.title.svelte'
+  import { fly } from 'svelte/transition'
+  import TitleInput from './column.titleInput.svelte'
   export let id
-  export let name
+  export let title
+  let isTitleEditing = false
 </script>
 
-<div {id} class="kanban-column" transition:slide>
-  <ColumnTitle {name} />
+<div
+  {id}
+  class="kanban-column"
+  transition:fly={{ x: 0, y: 300, opacity: 0, duration: 200 }}
+>
+  <header
+    class="text-sm font-thin h-5 border-b-2 border-blue-600 overflow-hidden"
+    on:click={() => (isTitleEditing = true)}
+  >
+    {#if isTitleEditing}
+      <TitleInput {title} {id} on:blur={() => (isTitleEditing = false)} />
+    {:else}
+      {title}
+    {/if}
+  </header>
+
   <div class="flex-1">
     <slot>
       <p class="text-sm text-gray-500">
