@@ -4,25 +4,19 @@
   import Board from './components/kanbanBoard.svelte'
   import { board } from './store/board.store'
   import ToggleDarkMode from './components/darkModeToggleSwitch.svelte'
-  import { onMount } from 'svelte'
-  import { getLocalTheme, themes } from './services/persistedTheme'
-  export let name
-  let isDarkMode = false
-  onMount(() => {
-    if (getLocalTheme() === themes.dark) {
-      window.document.body.classList.add('dark')
-      isDarkMode = true
-    }
-  })
+  import { themeStore } from './store/theme.store'
+  import ThemeProvider from './components/theme.provider.svelte'
 </script>
 
-<Layout>
-  <span slot="header">
-    <ToggleDarkMode {isDarkMode} />
-  </span>
-  <Board>
-    {#each $board as board}
-      <Column id={board.id} />
-    {/each}
-  </Board>
-</Layout>
+<ThemeProvider>
+  <Layout>
+    <span slot="header">
+      <ToggleDarkMode isDarkMode={$themeStore === 'dark'} />
+    </span>
+    <Board>
+      {#each $board as { id, name } (id)}
+        <Column id={board.id} {name} />
+      {/each}
+    </Board>
+  </Layout>
+</ThemeProvider>

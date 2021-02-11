@@ -1,8 +1,6 @@
+import {themes} from '../store/theme.store'
+
 const themeKey = 'theme'
-export const themes = {
-    dark:'dark',
-    light:'light'
-}
 
 function setInitialTheme(){
     if(window.matchMedia('(prefers-color-scheme: dark)').matches){
@@ -14,11 +12,8 @@ function setInitialTheme(){
         return themes.light
     }
 }
-function setTheme(theme){
+export function persistTheme(theme){
     localStorage.setItem(themeKey, theme)
-}
-export function isDarkMode(){
-    return getLocalTheme() === themes.dark
 }
 export function getLocalTheme(){
      return localStorage.getItem(themeKey) ? localStorage.getItem(themeKey) : setInitialTheme()
