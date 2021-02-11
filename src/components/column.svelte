@@ -1,10 +1,13 @@
 <script>
   import { deleteKanbanColumn } from '../store/board.store'
   import { slide } from 'svelte/transition'
+  import ColumnTitle from './column.title.svelte'
   export let id
+  export let name
 </script>
 
 <div {id} class="kanban-column" transition:slide>
+  <ColumnTitle {name} />
   <div class="flex-1">
     <slot>
       <p class="text-sm text-gray-500">
@@ -22,6 +25,6 @@
 
 <style>
   .kanban-column {
-    @apply w-36 h-full bg-gray-200 border-gray-500 border-2 flex flex-col p-2 text-center;
+    @apply w-36 h-full bg-gray-200 border-gray-500 border-2 flex flex-col p-2 text-center space-y-2;
   }
 </style>
