@@ -10,7 +10,7 @@ Install the dependencies...
 git clone https://github.com/brittneypostma/workflow.git
 cd workflow
 npm install
-git remote set upstream https://github.com/brittneypostma/workflow.git
+git remote add upstream https://github.com/brittneypostma/workflow.git
 ```
 
 ...then start [Rollup](https://rollupjs.org):
