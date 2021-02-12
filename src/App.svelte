@@ -1,24 +1,22 @@
 <script>
-  import DarkModeButton from './components/darkModeButton.svelte'
-  import { onMount } from 'svelte'
-  import { getLocalTheme, themes } from './services/localTheme'
-  export let name
-  onMount(() => {
-    if (getLocalTheme() === themes.dark) {
-      window.document.body.classList.add('dark')
-    }
-  })
+  import Layout from './components/_layout.svelte'
+  import Column from './components/column.svelte'
+  import Board from './components/kanbanBoard.svelte'
+  import { board } from './store/board.store'
+  import ToggleDarkMode from './components/darkModeToggleSwitch.svelte'
+  import { themeStore } from './store/theme.store'
+  import ThemeProvider from './components/theme.provider.svelte'
 </script>
 
-<main class="bg-white dark:bg-black text-black dark:text-white">
-  <DarkModeButton>Toggle</DarkModeButton>
-  <h1 class="text-7xl">Hello {name}!</h1>
-  <p>
-    Tailwind is working in this project, let's get started on <br />
-    <strong class="text-6xl">WorkFlow</strong>!
-  </p>
-  <h2>Check the readme file for todo's and how to get started.</h2>
-</main>
-
-<style>
-</style>
+<ThemeProvider>
+  <Layout>
+    <span slot="header">
+      <ToggleDarkMode isDarkMode={$themeStore === 'dark'} />
+    </span>
+    <Board>
+      {#each $board as { id, title } (id)}
+        <Column {id} {title} />
+      {/each}
+    </Board>
+  </Layout>
+</ThemeProvider>
