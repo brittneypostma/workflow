@@ -14,8 +14,8 @@
       <ToggleDarkMode isDarkMode={$themeStore === 'dark'} />
     </span>
     <Board>
-      {#each $board as { id, title } (id)}
-        <Column {id} {title} />
+      {#each $board as { id, title }, i (id)}
+        <Column {id} {title} index={i} />
       {/each}
     </Board>
   </Layout>

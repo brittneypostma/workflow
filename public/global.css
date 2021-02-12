@@ -5,3 +5,7 @@
 .kanban-button{
     @apply rounded w-28 p-2 border-2 border-black text-xs ;
 }
+[draggable="true"]{
+    user-select: none;
+    cursor: grab;
+}

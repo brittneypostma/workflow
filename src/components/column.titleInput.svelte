@@ -1,8 +1,11 @@
 <script>
   import { onMount } from 'svelte'
   import { editColumnName } from '../store/board.store'
+  /** @type {string} */
   export let title
+  /** @type {number} */
   export let id
+  /** @type {HTMLInputElement} */
   let inputField
   onMount(() => {
     inputField.value = title
