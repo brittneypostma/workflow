@@ -1,6 +1,7 @@
 <script>
   import Layout from './components/_layout.svelte'
   import Column from './components/column.svelte'
+  import ColumnList from './components/columnList.svelte'
   import Board from './components/kanbanBoard.svelte'
   import { board } from './store/board.store'
   import ToggleDarkMode from './components/darkModeToggleSwitch.svelte'
@@ -14,9 +15,7 @@
       <ToggleDarkMode isDarkMode={$themeStore === 'dark'} />
     </span>
     <Board>
-      {#each $board as { id, title }, i (id)}
-        <Column {id} {title} index={i} />
-      {/each}
+      <ColumnList/>
     </Board>
   </Layout>
 </ThemeProvider>

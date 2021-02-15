@@ -1,3 +1,4 @@
+import {spring} from 'svelte/motion'
 /**
  * 
  * @typedef {Object} ActionReturn
@@ -10,70 +11,79 @@
  * 
  */
 export function draggable(node, props ) {
-    /** @type {number} */
-    let x
-    /** @type {number} */
-    let y
-    /** @type {"left"|"right"=} */
-    let movingDirection
-    let elementSiblings = {
-        left : node.previousElementSibling !== null,
-        right : node.nextElementSibling !== null
-    }
+    let clientMousePosition = {x:0,y:0}
+    let originalNodeRect = undefined
+
+    const wobblingEffect = spring(0,{
+        stiffness:0.03,
+        damping:0.21
+    })
+    const nodePosition = spring({
+        top:node.getBoundingClientRect().top,left:node.getBoundingClientRect().left, height:node.getBoundingClientRect().height
+    })
+    const dostroyMoving = nodePosition.subscribe((value)=>{
+        if(node.style.position === 'fixed'){
+            node.style.top = value.top+'px'
+            node.style.left = value.left+'px'
+            node.style.height = value.height+'px'
+        }
+    })
+    const destroyWobbbling = wobblingEffect.subscribe((value)=>{
+        node.style.transform = `translate3d(${value}px,0,0) rotate3d(1,1,-2,${value}deg)`
+    })
     //node.setAttribute('draggable', 'true')
     /** @param {MouseEvent} event */
     function mouseDownHandler(event){
-        node.style.zIndex = '1000'
-        x = event.clientX
-        y = event.clientY
+        
+        clientMousePosition.x = event.clientX
+        clientMousePosition.y = event.clientY
+        originalNodeRect = node.getBoundingClientRect()
+        nodePosition.set({top:originalNodeRect.top, left:originalNodeRect.left, height:originalNodeRect.height}, {hard:true})
+        
         window.addEventListener('mousemove', mouseMoveHandler)
         window.addEventListener('mouseup', mouseUpHandler)
     }
     /** @param {MouseEvent} event */
     function mouseMoveHandler(event){
+        node.style.zIndex = '100'
         node.style.pointerEvents = "none"
-        const containerBounds = node.parentElement.getBoundingClientRect()
-        const nodeRect = node.getBoundingClientRect()
-        const toRightBorder = containerBounds.right - nodeRect.right
-        const toleftBorder = nodeRect.left - containerBounds.left 
-        const possibilities = {
-            canMoveRight : (toRightBorder>0),
-            canMoveLeft : (toleftBorder > 0),
-        }
-        const dx = event.clientX - x 
-		const dy = event.clientY - y
-        if(dx>= 0 ){
-            movingDirection="right"
-        }else movingDirection = "left"
-
-        if(dx>0 && possibilities.canMoveRight || dx<0 && possibilities.canMoveLeft){
-            node.dispatchEvent(new CustomEvent('moving', {detail:{dx,dy, x,y}}))
-        }
-		x = event.clientX
-		y = event.clientY
+        node.style.position = "fixed"
+        node.dispatchEvent(new CustomEvent('dragged', {detail:true}))
+        const dx = event.clientX - clientMousePosition.x 
+		const dy = event.clientY - clientMousePosition.y
+        const siblingOver = document.elementFromPoint(event.clientX, event.clientY)
+        siblingOver.dispatchEvent(new CustomEvent("over", {detail:{
+            id:+siblingOver.id,
+            direction : dx<0?'left':'right'
+        }}))
+        nodePosition.update((position)=>({
+            top:position.top + dy,
+            left:position.left + dx,
+            height:position.height
+        }))
+        wobblingEffect.set(-dx)
+		clientMousePosition.x = event.clientX
+		clientMousePosition.y = event.clientY
        
     }
     function mouseUpHandler(){
+        
         node.style.pointerEvents = "initial"
         node.style.zIndex = 'initial'
-        const nodeRect = node.getBoundingClientRect()
-
-        const leftSiblingRect = node.previousElementSibling.getBoundingClientRect()
-        const rightSiblingRect = node.nextElementSibling.getBoundingClientRect()
-
-        const nodeCenter = getCenterRectX(nodeRect.x,nodeRect.width)
-        const leftSiblingCenter = getCenterRectX(leftSiblingRect.x, leftSiblingRect.width)
-        console.log(nodeCenter - leftSiblingCenter)
-        //console.log({1:node.previousElementSibling, 2:node.nextElementSibling})
+        node.style.position = 'initial'
+        //originalNodeRect = node.getBoundingClientRect()
+        nodePosition.set({top:originalNodeRect.top, left:originalNodeRect.left, height:originalNodeRect.height},{hard:true})
+        node.dispatchEvent(new CustomEvent('dragged', {detail:false}))
+        node.dispatchEvent(new CustomEvent('dropped', {detail:node.id}))
+        wobblingEffect.set(0, {hard:true})
         window.removeEventListener('mousemove', mouseMoveHandler)
         window.removeEventListener('mouseup', mouseUpHandler);
-        node.dispatchEvent(new CustomEvent('drop', {detail:{
-            dropID:0
-        }}))
     }
     node.addEventListener('mousedown', mouseDownHandler, false)
-}
-function getCenterRectX(x, width){
-    return x+(width/2)
-
+    return ({
+        destroy: ()=>{
+            destroyWobbbling()
+            dostroyMoving()
+        }
+    })
 }

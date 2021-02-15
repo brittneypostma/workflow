@@ -2,7 +2,7 @@
   import { addKanbanColumn } from '../store/board.store'
 </script>
 
-<main class="flex flex-row h-full min-w-full overflow-x-scroll p-4 space-x-3">
+<main class="flex flex-row h-full min-w-full overflow-x-scroll p-4 transition-all space-x-4">
   <div id="cards-area" class="w-auto no-wrap flex flex-row space-x-6">
     <slot>
       <p
