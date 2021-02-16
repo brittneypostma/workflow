@@ -21,14 +21,14 @@ export function draggable(node, props ) {
     const nodePosition = spring({
         top:node.getBoundingClientRect().top,left:node.getBoundingClientRect().left, height:node.getBoundingClientRect().height
     })
-    const dostroyMoving = nodePosition.subscribe((value)=>{
+    const destroyMoving = nodePosition.subscribe((value)=>{
         if(node.style.position === 'fixed'){
             node.style.top = value.top+'px'
             node.style.left = value.left+'px'
             node.style.height = value.height+'px'
         }
     })
-    const destroyWobbbling = wobblingEffect.subscribe((value)=>{
+    const destroyWobbling = wobblingEffect.subscribe((value)=>{
         node.style.transform = `translate3d(${value}px,0,0) rotate3d(1,1,-2,${value}deg)`
     })
     //node.setAttribute('draggable', 'true')
@@ -81,8 +81,8 @@ export function draggable(node, props ) {
     node.addEventListener('mousedown', mouseDownHandler, false)
     return ({
         destroy: ()=>{
-            destroyWobbbling()
-            dostroyMoving()
+            destroyWobbling()
+            destroyMoving()
         }
     })
 }
