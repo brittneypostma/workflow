@@ -1,6 +1,6 @@
 <script>
-  import { themeStore } from '../../store/theme.store'
-  import ToggleDarkMode from '../darkModeToggleSwitch.svelte'
+  import { themeStore } from '../store/theme.store'
+  import ToggleDarkMode from './darkModeToggleSwitch.svelte'
 
   const year = new Date().getFullYear()
 </script>

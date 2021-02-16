@@ -8,9 +8,9 @@
 >
   <slot />
   <button
-    class="relative flex-shrink-0 w-64 p-2 text-xs border-2 border-black rounded dark:border-white focus:outline-none focus:ring-2 focus:ring-accent"
+    class="relative flex-shrink-0 w-64 p-2 text-xs border-2 border-gray-500 rounded focus:outline-none focus:ring-2 focus:ring-accent"
     on:click={addKanbanColumn}
   >
-    Add New Column</button
-  >
+    Add New Column
+  </button>
 </div>

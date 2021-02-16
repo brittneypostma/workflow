@@ -6,7 +6,9 @@
 </script>
 
 <label for={id}>
-  <div class="switch">
+  <div
+    class="relative inline-block align-middle bg-transparent cursor-pointer select-none"
+  >
     <input
       {id}
       name={id}
@@ -16,8 +18,10 @@
       bind:checked
       on:click
     />
-    <div class="track" />
-    <div class="thumb">
+    <div class="w-12 h-6 bg-gray-100 rounded-full shadow-inner" />
+    <div
+      class="absolute top-0 w-6 h-6 p-1 transition-all duration-300 ease-in-out bg-white rounded-full shadow-md -left-1 thumb dark:bg-gray-800"
+    >
       <slot name="icon" />
     </div>
   </div>
@@ -25,36 +29,7 @@
 </label>
 
 <style>
-  .switch {
-    @apply relative inline-block align-middle cursor-pointer select-none bg-transparent;
-  }
-
-  .track {
-    @apply w-12 h-6 bg-gray-600 rounded-full shadow-inner;
-  }
-
-  .thumb {
-    @apply p-1 transition-all duration-300 ease-in-out absolute top-0 left-0 w-6 h-6 bg-white border-2 border-gray-600 rounded-full;
-  }
-
   input[type='checkbox']:checked ~ .thumb {
-    @apply transform translate-x-full border-black bg-gray-500;
-  }
-
-  input[type='checkbox']:checked ~ .track {
-    @apply transform transition-colors bg-gray-200;
-  }
-
-  input[type='checkbox']:disabled ~ .track {
-    @apply bg-gray-500;
-  }
-
-  input[type='checkbox']:disabled ~ .thumb {
-    @apply bg-gray-100 border-gray-500;
-  }
-
-  input[type='checkbox']:focus + .track,
-  input[type='checkbox']:active + .track {
-    @apply shadow-lg;
+    @apply transform translate-x-full left-1;
   }
 </style>

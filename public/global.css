@@ -18,7 +18,3 @@
 
 @tailwind utilities;
 
-[draggable="true"]{
-    user-select: none;
-    cursor: grab;
-}

@@ -1,7 +1,7 @@
 <!-- This is the main file for the app, an index.js of sorts. -->
 <script>
   import ThemeProvider from './components/theme.provider.svelte'
-  import Layout from './components/layout/_layout.svelte'
+  import Layout from './components/_layout.svelte'
   import ColumnList from './components/columnList.svelte'
   import Board from './components/kanbanBoard.svelte'
 </script>
