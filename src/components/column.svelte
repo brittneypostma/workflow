@@ -31,8 +31,8 @@
 >
 
 
-  <input on:blur="{(e) => editColumnName(id,e.target.value)}" type="text" 
-    class="text-sm font-thin h-5 border-b-2 border-blue-600 overflow-hidden cursor-text bg-transparent focus:outline-none"
+  <input on:mousedown|stopPropagation on:blur="{(e) => editColumnName(id,e.target.value)}" value={title} type="text" 
+    class="text-sm text-center font-thin h-5 border-b-2 border-blue-600 overflow-hidden cursor-text bg-transparent focus:outline-none"
   >
 
   <div class="flex-1">
