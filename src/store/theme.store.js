@@ -1,11 +1,18 @@
-import {getLocalTheme} from '../services/localStorage'
-import {writable} from 'svelte/store'
+import {persistedStore} from '../services/localStorage'
+
 const themes = {
     dark:'dark',
     light:'light'
 }
+function setInitialTheme(){
+    if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+        return themes.dark
+    }else{
+        return themes.light
+    }
+}
 
-const themeStore = writable(getLocalTheme())
+const themeStore = persistedStore(setInitialTheme(), 'theme'),
 
 function setTheme(theme){
     if(theme === themes.dark || theme === themes.light){
