@@ -1,13 +1,20 @@
+<script>
+  import { themeStore } from '../store/theme.store'
+  import ToggleDarkMode from './darkModeToggleSwitch.svelte'
+
+  const year = new Date().getFullYear()
+</script>
+
 <div
-  class="flex flex-col w-screen h-screen bg-blue-200 dark:bg-gray-200 mx-auto"
+  class="grid h-full grid-cols-1 gap-2 p-2 text-gray-900 bg-white grid-rows-layout dark:text-white dark:bg-gray-900"
 >
-  <div
-    class="w-full h-12 bg-blue-400 dark:bg-gray-400 flex flex-row justify-end"
-  >
-    <slot name="header">No header content</slot>
-  </div>
-  <div class="w-full flex-1">
-    <slot>Empty Page</slot>
-  </div>
-  <footer class="h-12 bg-blue-600 dark:bg-gray-600">Footer content</footer>
+  <header>
+    <ToggleDarkMode isDarkMode={$themeStore === 'dark'} />
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="text-center">&copy;{year} ZTM WorkFlow Group</footer>
 </div>

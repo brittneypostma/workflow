@@ -3,14 +3,14 @@
   import { themeStore, themes } from '../store/theme.store'
 
   onMount(() => {
-    const unsunscribe = themeStore.subscribe((theme) => {
+    const unsubscribe = themeStore.subscribe((theme) => {
       if (theme === themes.dark) {
         window.document.documentElement.className = themes.dark
       } else {
         window.document.documentElement.className = ''
       }
     })
-    return () => unsunscribe()
+    return () => unsubscribe()
   })
 </script>
 

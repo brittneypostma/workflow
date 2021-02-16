@@ -1,21 +1,18 @@
+<!-- This is the main file for the app, an index.js of sorts. -->
 <script>
+  import ThemeProvider from './components/theme.provider.svelte'
   import Layout from './components/_layout.svelte'
-  import Column from './components/column.svelte'
   import ColumnList from './components/columnList.svelte'
   import Board from './components/kanbanBoard.svelte'
-  import { board } from './store/board.store'
-  import ToggleDarkMode from './components/darkModeToggleSwitch.svelte'
-  import { themeStore } from './store/theme.store'
-  import ThemeProvider from './components/theme.provider.svelte'
 </script>
 
+<!-- This wraps the app to detect and set the theme -->
 <ThemeProvider>
+  <!-- This is the main layout that wraps the app -->
   <Layout>
-    <span slot="header">
-      <ToggleDarkMode isDarkMode={$themeStore === 'dark'} />
-    </span>
+    <!-- This is the main content of the page -->
     <Board>
-      <ColumnList/>
+      <ColumnList />
     </Board>
   </Layout>
 </ThemeProvider>
