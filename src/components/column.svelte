@@ -4,6 +4,7 @@
     deleteKanbanColumn,
     reverseState,
     changePosition,
+    editColumnName
   } from '../store/board.store'
   import { draggable } from '../actions/draggable'
   import TitleInput from './column.titleInput.svelte'
@@ -12,8 +13,9 @@
   export let id
   export let title
   
-  let isTitleEditing = false
   let isDragged = false
+
+
 </script>
 
 <div
@@ -27,16 +29,11 @@
   }}
   on:dropped
 >
-  <header
-    class="text-sm font-thin h-5 border-b-2 border-blue-600 overflow-hidden cursor-text"
-    on:click={() => (isTitleEditing = true)}
+
+
+  <input on:mousedown|stopPropagation on:blur="{(e) => editColumnName(id,e.target.value)}" value={title} type="text" 
+    class="text-sm text-center font-thin h-5 border-b-2 border-blue-600 overflow-hidden cursor-text bg-transparent focus:outline-none"
   >
-    {#if isTitleEditing}
-      <TitleInput {title} {id} on:blur={() => (isTitleEditing = false)} />
-    {:else}
-      {title}
-    {/if}
-  </header>
 
   <div class="flex-1">
     <slot>
@@ -50,20 +47,7 @@
       </p>
     </slot>
   </div>
-  <div class="flex justify-between w-full">
-    <button
-      class="w-4 h-4 text-sm bg-red-400 text-center"
-      on:click={() => changePosition(index, index === 0 ? 0 : index - 1)}
-    >
-      {'<'}
-    </button>
-    <button
-      class="w-4 h-4 text-sm bg-red-400 text-center"
-      on:click={() => changePosition(index, index + 1)}
-    >
-      {'>'}
-    </button>
-  </div>
+
   <button class="kanban-button self-center" on:click={reverseState}>
     Add a Card</button
   >

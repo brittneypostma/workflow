@@ -34,7 +34,6 @@ export function draggable(node, props ) {
     //node.setAttribute('draggable', 'true')
     /** @param {MouseEvent} event */
     function mouseDownHandler(event){
-        
         clientMousePosition.x = event.clientX
         clientMousePosition.y = event.clientY
         originalNodeRect = node.getBoundingClientRect()
