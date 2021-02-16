@@ -26,7 +26,7 @@ export const lastId = derived(board, ($board, set) => {
 function getEmptyColumn(){
     return ({
         id:get(lastId),
-        title:'New Column',
+        title:'Edit Column Title',
         cards:[]
     })
 }

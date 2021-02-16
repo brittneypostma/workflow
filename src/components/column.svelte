@@ -2,63 +2,76 @@
   import { fly } from 'svelte/transition'
   import {
     deleteKanbanColumn,
-    reverseState,
     changePosition,
-    editColumnName
+    editColumnName,
   } from '../store/board.store'
   import { draggable } from '../actions/draggable'
-  import TitleInput from './column.titleInput.svelte'
 
   export let index
   export let id
   export let title
-  
+
   let isDragged = false
-
-
 </script>
 
 <div
   id={index}
-  class="kanban-column"
+  class="grid flex-shrink-0 w-64 h-full grid-cols-1 p-2 space-y-2 text-center border-2 rounded select-none grid-rows-layout"
   use:draggable
-  transition:fly={{x:-100}}
+  transition:fly={{ x: -100 }}
   on:over
   on:dragged={(e) => {
     isDragged = e.detail
   }}
   on:dropped
 >
-
-
-  <input on:mousedown|stopPropagation on:blur="{(e) => editColumnName(id,e.target.value)}" value={title} type="text" 
-    class="text-sm text-center font-thin h-5 border-b-2 border-blue-600 overflow-hidden cursor-text bg-transparent focus:outline-none"
-  >
-
-  <div class="flex-1">
-    <slot>
-      <p class="text-sm text-gray-500">
-        There are no cards here, lets add some or...
-        <button
-          class="kanban-button bg-red-400"
-          on:click={() => deleteKanbanColumn(id)}
-          >Delete Column number {id}</button
+  <div class="flex w-full space-x-2">
+    <input
+      on:mousedown|stopPropagation
+      on:blur={(e) => editColumnName(id, e.target.value)}
+      value={title}
+      type="text"
+      class="w-full overflow-hidden text-sm font-thin text-center bg-transparent border-b-2 cursor-text focus:outline-none"
+    />
+    <!-- Delete column button, would like to remove id once bugs are fixed -->
+    <button class="bg-red-400" on:click={() => deleteKanbanColumn(id)}>
+      <!-- Trash icon -->
+      <span class="flex items-center gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-trash"
+          viewBox="0 0 16 16"
         >
-      </p>
-    </slot>
+          <path
+            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+          />
+          <path
+            fill-rule="evenodd"
+            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+          />
+        </svg>
+        id:{id}</span
+      ></button
+    >
   </div>
+  <p>There are no cards here, lets add some.</p>
 
-  <button class="kanban-button self-center" on:click={reverseState}>
+  <button
+    class="self-end btn-primary "
+    on:click={() => {
+      /** TODO */
+    }}
+  >
     Add a Card</button
   >
 </div>
 {#if isDragged}
-  <div id={index} class="kanban-column " transition:fly={{x:-100, delay:0, duration:200}} />
+  <div
+    id={index}
+    class="grid flex-shrink-0 w-64 h-full grid-cols-1 p-2 space-y-2 text-center border-2 rounded select-none grid-rows-layout"
+    transition:fly={{ x: -100, delay: 0, duration: 200 }}
+  />
 {/if}
-
-<style>
-  .kanban-column {
-    @apply w-36 h-full bg-gray-200 border-gray-500 border-2 flex flex-col p-2 text-center space-y-2;
-    user-select: none;
-  }
-</style>

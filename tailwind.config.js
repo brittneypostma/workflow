@@ -13,7 +13,11 @@ module.exports = {
   },
   darkMode: 'class', // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateRows: {
+        layout: 'auto 1fr auto'
+      }
+    },
   },
   variants: {
     extend: {},
