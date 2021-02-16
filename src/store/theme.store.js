@@ -12,7 +12,7 @@ function setInitialTheme(){
     }
 }
 
-const themeStore = persistedStore(setInitialTheme(), 'theme'),
+const themeStore = persistedStore(setInitialTheme(), 'theme')
 
 function setTheme(theme){
     if(theme === themes.dark || theme === themes.light){
