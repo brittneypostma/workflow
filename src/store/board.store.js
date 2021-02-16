@@ -45,12 +45,13 @@ export function reverseState(){
  * @param {number} newIndex New index of a Column
  */
 export function changePosition(oldIndex, newIndex){
-    
-    board.update(state=>{
-        const newState = state.filter(arrayElement=>arrayElement.id !== state[oldIndex].id)
-        newState.splice(newIndex, 0, state[oldIndex])
-        return newState
-    })
+    if(oldIndex && newIndex){
+        board.update(state=>{
+            const newState = state.filter(arrayElement=>arrayElement.id !== state[oldIndex].id)
+            newState.splice(newIndex, 0, state[oldIndex])
+            return newState
+        })
+    }
 
 }
 export function deleteKanbanColumn(id){

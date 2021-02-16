@@ -47,20 +47,7 @@
       </p>
     </slot>
   </div>
-  <div class="flex justify-between w-full">
-    <button
-      class="w-4 h-4 text-sm bg-red-400 text-center"
-      on:click={() => changePosition(index, index === 0 ? 0 : index - 1)}
-    >
-      {'<'}
-    </button>
-    <button
-      class="w-4 h-4 text-sm bg-red-400 text-center"
-      on:click={() => changePosition(index, index + 1)}
-    >
-      {'>'}
-    </button>
-  </div>
+
   <button class="kanban-button self-center" on:click={reverseState}>
     Add a Card</button
   >
