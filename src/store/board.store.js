@@ -1,5 +1,6 @@
 //@ts-check
 import {writable, get, derived, Writable} from 'svelte/store'
+import {persistedStore} from '../services/localStorage' 
 /**
  * @typedef {Object} CardModel
  * 
@@ -10,7 +11,7 @@ import {writable, get, derived, Writable} from 'svelte/store'
  */
 
 /** @type {Writable<ColumnModel[]>} */
-export const board = writable([])
+export const board = persistedStore([], 'boardStore')
 export const lastId = derived(board, ($board, set) => {
  if($board.length>0){
     const indexes = $board.map(element => element.id)
@@ -19,10 +20,10 @@ export const lastId = derived(board, ($board, set) => {
 }, 0)
 /**
  * 
- * @param {ColumnModel[]} state
+ * 
  * @returns {ColumnModel} 
  */
-function getEmptyColumn(state){
+function getEmptyColumn(){
     return ({
         id:get(lastId),
         title:'New Column',
@@ -32,7 +33,7 @@ function getEmptyColumn(state){
 
 export function addKanbanColumn(){
     board.update((state)=>{
-        const column = getEmptyColumn(state)
+        const column = getEmptyColumn()
         return [...state, column]
     })
 }
