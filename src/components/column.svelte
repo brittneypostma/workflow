@@ -2,7 +2,6 @@
   import { fly } from 'svelte/transition'
   import {
     deleteKanbanColumn,
-    reverseState,
     changePosition,
     editColumnName
   } from '../store/board.store'
@@ -48,7 +47,7 @@
     </slot>
   </div>
 
-  <button class="kanban-button self-center" on:click={reverseState}>
+  <button class="kanban-button self-center" on:click={()=>{/** TODO */}}>
     Add a Card</button
   >
 </div>
