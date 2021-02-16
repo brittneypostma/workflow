@@ -1,4 +1,5 @@
 <script>
+    import {flip} from 'svelte/animate'
     import Column from './column.svelte'
     import DragTarget from './dragTarget.svelte'
     import { board, changePosition} from '../store/board.store'
@@ -22,9 +23,9 @@
 </script>
 
 {#each $board as column, index (column.id) }
-    <DragTarget isVertical side="left" {index} {dragEvent}/>
-    <Column on:dropped={dropHandler} on:over={overHandler} {index} id={column.id} title={column.title}></Column>
-    <DragTarget isVertical side="right" {index} {dragEvent}/>
+    <div animate:flip={{duration:200}}> 
+        <Column on:dropped={dropHandler} on:over={overHandler} {index} id={column.id} title={column.title}></Column>
+    </div>
 {/each}
 
 <style>
