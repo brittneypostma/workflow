@@ -47,11 +47,11 @@ export function draggable(node, props ) {
         node.style.zIndex = '100'
         node.style.pointerEvents = "none"
         node.style.position = "fixed"
-        node.dispatchEvent(new CustomEvent('dragged', {detail:true}))
+        node.dispatchEvent(new CustomEvent('dragged', {detail:{index:node.id}}))
         const dx = event.clientX - clientMousePosition.x 
 		const dy = event.clientY - clientMousePosition.y
         const siblingOver = document.elementFromPoint(event.clientX, event.clientY)
-        siblingOver.dispatchEvent(new CustomEvent("over", {detail:{
+        siblingOver?.dispatchEvent(new CustomEvent("over", {detail:{
             id:+siblingOver.id,
             direction : dx<0?'left':'right'
         }}))
@@ -72,7 +72,7 @@ export function draggable(node, props ) {
         node.style.position = 'initial'
         //originalNodeRect = node.getBoundingClientRect()
         nodePosition.set({top:originalNodeRect.top, left:originalNodeRect.left, height:originalNodeRect.height},{hard:true})
-        node.dispatchEvent(new CustomEvent('dragged', {detail:false}))
+        node.dispatchEvent(new CustomEvent('dragged', {detail:{index:null}}))
         node.dispatchEvent(new CustomEvent('dropped', {detail:node.id}))
         wobblingEffect.set(0, {hard:true})
         window.removeEventListener('mousemove', mouseMoveHandler)

@@ -2,7 +2,6 @@
   import { fly } from 'svelte/transition'
   import {
     deleteKanbanColumn,
-    changePosition,
     editColumnName,
   } from '../store/board.store'
   import { draggable } from '../actions/draggable'
@@ -11,7 +10,6 @@
   export let id
   export let title
 
-  let isDragged = false
 </script>
 
 <div
@@ -20,9 +18,7 @@
   use:draggable
   transition:fly={{ x: -100 }}
   on:over
-  on:dragged={(e) => {
-    isDragged = e.detail
-  }}
+  on:dragged
   on:dropped
 >
   <div>
@@ -83,13 +79,5 @@
       >
     </button>
   </div>
-
   <slot />
 </div>
-<!-- {#if isDragged}
-  <div
-    id={index}
-    class="grid flex-shrink-0 w-64 h-full grid-cols-1 p-2 space-y-2 text-center bg-gray-100 border-black rounded cursor-move select-none dark:bg-gray-800 dark:border-white grid-rows-layout"
-    transition:fly={{ x: -100, delay: 0, duration: 200 }}
-  />
-{/if} -->
