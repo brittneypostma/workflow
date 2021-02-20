@@ -12,7 +12,7 @@
   }
 
   .btn-primary {
-    @apply bg-green-500 text-white
+    @apply bg-green-400 text-white
   }
 }
 
