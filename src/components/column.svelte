@@ -1,20 +1,16 @@
 <script>
   import { fly } from 'svelte/transition'
-  import {
-    deleteKanbanColumn,
-    editColumnName,
-  } from '../store/board.store'
+  import { deleteKanbanColumn, editColumnName } from '../store/board.store'
   import { draggable } from '../actions/draggable'
 
   export let index
   export let id
   export let title
-
 </script>
 
 <div
   id={index}
-  class="grid flex-shrink-0 w-64 h-full grid-cols-1 p-2 space-y-2 text-center bg-gray-100 border-2 border-black rounded cursor-move select-none dark:bg-gray-800 dark:border-white"
+  class="grid flex-shrink-0 w-64 h-full grid-cols-1 p-2 space-y-2 text-center border-2 rounded cursor-move select-none border-secondary-900 bg-primary-100 dark:bg-primary-800 dark:border-primary-200"
   use:draggable
   transition:fly={{ x: -100 }}
   on:over
@@ -28,11 +24,11 @@
         on:blur={(e) => editColumnName(id, e.target.value)}
         value={title}
         type="text"
-        class="w-full overflow-hidden text-sm font-thin text-center bg-transparent border-b cursor-text focus:outline-none"
+        class="w-full overflow-hidden text-sm font-thin text-center bg-transparent border-b border-secondary-900 cursor-text focus:outline-none"
       />
       <!-- Delete column button, would like to remove id once bugs are fixed -->
       <button
-        class="text-white bg-red-400"
+        class="text-white bg-red-500"
         on:click={() => deleteKanbanColumn(id)}
       >
         <!-- Trash icon -->
