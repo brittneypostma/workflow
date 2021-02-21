@@ -1,15 +1,28 @@
 <script>
   import { fly } from 'svelte/transition'
-  import {
-    deleteKanbanColumn,
-    editColumnName,
-  } from '../store/board.store'
+  import { createEventDispatcher } from 'svelte'
+
+  import { deleteKanbanColumn, editColumnName } from '../store/board.store'
   import { draggable } from '../actions/draggable'
+  import TaskAdder from './taskAdder.svelte'
 
   export let index
   export let id
   export let title
 
+  const dispatch = createEventDispatcher()
+
+  let addingTask = false
+
+  function add(event) {
+    addingTask = false
+    const { task } = event.detail
+    // console.log(id)
+    dispatch('taskAdded', {
+      column: id,
+      task: task,
+    })
+  }
 </script>
 
 <div
@@ -58,7 +71,7 @@
     <button
       class="self-start w-full btn-primary"
       on:click={() => {
-        /** TODO */
+        addingTask = true
       }}
     >
       <span class="flex justify-center">
@@ -78,6 +91,12 @@
         </svg> Add a Card</span
       >
     </button>
+
+    {#if addingTask}
+      <div class="h-full px-4 flex flex-col space-y-3">
+        <TaskAdder on:add={add} on:cancel={() => (addingTask = false)} />
+      </div>
+    {/if}
   </div>
   <slot />
 </div>
