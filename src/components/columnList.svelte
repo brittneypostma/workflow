@@ -23,16 +23,15 @@
     }
   }
 
-  //   function save(event, callback) {
-  //     callback(event)
-  //     deselectCard(event)
-  //     Projects.dump(projects)
-  //   }
+  function addCardHandler(event) {
+    const { column: columnId, card } = event.detail
 
-  //   function addCard(event) {
-  //     const { column, card } = event.detail
-  //     columns[column].cards = [card, ...columns[column].cards]
-  //   }
+    // console.log({ columnId })
+    // console.log(event.detail)
+    // console.log(event.detail.card);
+    // console.log({ columnId, card })
+    addCard(columnId, card)
+  }
 </script>
 
 {#each $board as column, index (column.id)}
@@ -43,14 +42,7 @@
       }}
       on:dropped={dropHandler}
       on:over={overHandler}
-      on:cardAdded={(event) => {
-        const { column: columnId, card: card } = event.detail
-        // console.log({ columnId })
-        // console.log(event.detail)
-        // console.log(event.detail.card);
-        // console.log({ columnId, card })
-        addCard(columnId, card)
-      }}
+      on:cardAdded={addCardHandler}
       {index}
       id={column.id}
       title={column.title}
