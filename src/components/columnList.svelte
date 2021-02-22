@@ -46,6 +46,7 @@
       {index}
       id={column.id}
       title={column.title}
+      cards={column.cards}
     />
     <!-- if the column is dragged is taken out of the DOM flow, in it's place we render this skeleton-->
     <ColumnSkeleton {isDragged} {index} />

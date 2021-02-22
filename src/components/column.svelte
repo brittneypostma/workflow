@@ -4,10 +4,12 @@
   import { deleteKanbanColumn, editColumnName } from '../store/board.store'
   import { draggable } from '../actions/draggable'
   import CardAdder from './cardAdder.svelte'
+  import Card from './card.svelte'
 
   export let index
   export let id
   export let title
+  export let cards
 
   const dispatch = createEventDispatcher()
 
@@ -96,6 +98,10 @@
         <CardAdder on:add={add} on:cancel={() => (addingCard = false)} />
       </div>
     {/if}
+
+    {#each cards as card}
+      <Card column={id} {card} />
+    {/each}
   </div>
   <slot />
 </div>
