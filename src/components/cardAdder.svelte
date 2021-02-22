@@ -5,15 +5,15 @@
 
   const dispatch = createEventDispatcher()
 
-  let newTaskTitle = ''
+  let newCardTitle = ''
 
   function add() {
-    const task = {
+    const card = {
       // _id: uuid(),
-      title: newTaskTitle,
+      title: newCardTitle,
     }
 
-    dispatch('add', { task: task })
+    dispatch('add', { card: card })
   }
 
   function cancel() {
@@ -23,7 +23,7 @@
 
 <div class="flex flex-col space-y-3">
   <input
-    bind:value={newTaskTitle}
+    bind:value={newCardTitle}
     class="rounded p-2"
     placeholder="Give it a title..."
   />

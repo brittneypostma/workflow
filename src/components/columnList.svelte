@@ -25,13 +25,13 @@
 
   //   function save(event, callback) {
   //     callback(event)
-  //     deselectTask(event)
+  //     deselectCard(event)
   //     Projects.dump(projects)
   //   }
 
-  //   function addTask(event) {
-  //     const { column, task } = event.detail
-  //     columns[column].tasks = [task, ...columns[column].tasks]
+  //   function addCard(event) {
+  //     const { column, card } = event.detail
+  //     columns[column].cards = [card, ...columns[column].cards]
   //   }
 </script>
 
@@ -43,11 +43,11 @@
       }}
       on:dropped={dropHandler}
       on:over={overHandler}
-      on:taskAdded={(event) => {
-        const { column: columnId, task: card } = event.detail
+      on:cardAdded={(event) => {
+        const { column: columnId, card: card } = event.detail
         // console.log({ columnId })
         // console.log(event.detail)
-        // console.log(event.detail.task);
+        // console.log(event.detail.card);
         // console.log({ columnId, card })
         addCard(columnId, card)
       }}

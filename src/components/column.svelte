@@ -3,7 +3,7 @@
   import { createEventDispatcher } from 'svelte'
   import { deleteKanbanColumn, editColumnName } from '../store/board.store'
   import { draggable } from '../actions/draggable'
-  import TaskAdder from './taskAdder.svelte'
+  import CardAdder from './cardAdder.svelte'
 
   export let index
   export let id
@@ -11,15 +11,15 @@
 
   const dispatch = createEventDispatcher()
 
-  let addingTask = false
+  let addingCard = false
 
   function add(event) {
-    addingTask = false
-    const { task } = event.detail
+    addingCard = false
+    const { card } = event.detail
     // console.log(id)
-    dispatch('taskAdded', {
+    dispatch('cardAdded', {
       column: id,
-      task: task,
+      card: card,
     })
   }
 </script>
@@ -70,7 +70,7 @@
     <button
       class="self-start w-full btn-primary"
       on:click={() => {
-        addingTask = true
+        addingCard = true
       }}
     >
       <span class="flex justify-center">
@@ -91,9 +91,9 @@
       >
     </button>
 
-    {#if addingTask}
+    {#if addingCard}
       <div class="h-full px-4 flex flex-col space-y-3">
-        <TaskAdder on:add={add} on:cancel={() => (addingTask = false)} />
+        <CardAdder on:add={add} on:cancel={() => (addingCard = false)} />
       </div>
     {/if}
   </div>
