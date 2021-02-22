@@ -44,10 +44,12 @@
       on:dropped={dropHandler}
       on:over={overHandler}
       on:taskAdded={(event) => {
-        const { column: columnId } = event.detail
-        console.log({ columnId })
-        console.log(event.detail)
-        addCard(columnId)
+        const { column: columnId, task: card } = event.detail
+        // console.log({ columnId })
+        // console.log(event.detail)
+        // console.log(event.detail.task);
+        // console.log({ columnId, card })
+        addCard(columnId, card)
       }}
       {index}
       id={column.id}

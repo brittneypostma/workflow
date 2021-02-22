@@ -74,12 +74,9 @@ export function editColumnName(id, name) {
 
 // Add card
 
-export function addCard(id, cardName) {
+export function addCard(id, card) {
     board.update(state => state.map(column => {
-        if (column.id === id) {
-            column.cards.push({cardName});
-            return ({ ...column, newCard: {cardName} })
-        } else 
+        column.id === id && column.cards.push(card);
         return ({ ...column })
     }))
 }
