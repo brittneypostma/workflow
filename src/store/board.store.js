@@ -1,5 +1,5 @@
 //@ts-check
-import { writable, get, derived, Writable } from 'svelte/store'
+import { writable, get, derived } from 'svelte/store'
 import { persistedStore } from '../services/localStorage'
 /**
  * @typedef {Object} CardModel
@@ -69,14 +69,5 @@ export function editColumnName(id, name) {
     board.update(state => state.map(column => {
         if (column.id === id) return ({ ...column, title: name })
         else return ({ ...column })
-    }))
-}
-
-// Add card
-
-export function addCard(id, card) {
-    board.update(state => state.map(column => {
-        column.id === id && column.cards.push(card);
-        return ({ ...column })
     }))
 }

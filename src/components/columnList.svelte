@@ -3,7 +3,8 @@
   import Column from './column.svelte'
   import DragTarget from './dragTarget.svelte'
   import ColumnSkeleton from './columnSkeleton.svelte'
-  import { board, changePosition, addCard } from '../store/board.store'
+  import { board, changePosition } from '../store/board.store'
+  import { addCard } from '../actions/card'
   let isDragged
   let dragEvent = {
     index: undefined,
