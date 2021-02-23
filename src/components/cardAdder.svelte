@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte'
-  // import { v4 as uuid } from "uuid";
+  import { v4 as uuid } from 'uuid'
   import Button from './button.svelte'
 
   const dispatch = createEventDispatcher()
@@ -9,10 +9,9 @@
 
   function add() {
     const card = {
-      // _id: uuid(),
+      id: uuid(),
       title: newCardTitle,
     }
-
     dispatch('add', { card: card })
   }
 

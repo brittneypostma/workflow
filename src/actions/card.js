@@ -8,12 +8,10 @@ export function addCard(event) {
     }))
 }
 
-export function deleteCard(event) {
-    const { column: columnId, card } = event.detail
-    card = JSON.stringify(card);
+export function deleteCard(columnId, card) {
     board.update(columns => columns.map(column => {
         if(column.id == columnId) {
-            column.cards = column.cards.filter(c => c != card);
+            column.cards = column.cards.filter(c => c.id != card.id);
         }
         return ({ ...column })
     }))

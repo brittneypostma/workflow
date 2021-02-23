@@ -15,7 +15,7 @@
 
 <div
   draggable="true"
-  class="bg-white rounded box-border border-2 border-gray-200 hover:border-black text-gray-600 hover:text-black hover:shadow p-2 select-none cursor-move"
+  class="bg-white flex-1 rounded box-border border-2 border-gray-200 hover:border-black text-gray-600 hover:text-black hover:shadow p-2 select-none cursor-move"
 >
   <div class="font-bold">{card.title}</div>
 </div>
