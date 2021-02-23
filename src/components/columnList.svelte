@@ -3,7 +3,8 @@
   import Column from './column.svelte'
   import DragTarget from './dragTarget.svelte'
   import ColumnSkeleton from './columnSkeleton.svelte'
-  import { board, changePosition, addCard } from '../store/board.store'
+  import { board, changePosition } from '../store/board.store'
+  import { addCard, deleteCard } from '../actions/card'
   let isDragged
   let dragEvent = {
     index: undefined,
@@ -22,16 +23,6 @@
       direction: undefined,
     }
   }
-
-  function addCardHandler(event) {
-    const { column: columnId, card } = event.detail
-
-    // console.log({ columnId })
-    // console.log(event.detail)
-    // console.log(event.detail.card);
-    // console.log({ columnId, card })
-    addCard(columnId, card)
-  }
 </script>
 
 {#each $board as column, index (column.id)}
@@ -42,7 +33,7 @@
       }}
       on:dropped={dropHandler}
       on:over={overHandler}
-      on:cardAdded={addCardHandler}
+      on:cardAdded={addCard}
       {index}
       id={column.id}
       title={column.title}

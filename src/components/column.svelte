@@ -5,6 +5,7 @@
   import { draggable } from '../actions/draggable'
   import CardAdder from './cardAdder.svelte'
   import Card from './card.svelte'
+  import { deleteCard } from '../actions/card'
 
   export let index
   export let id
@@ -100,7 +101,15 @@
     {/if}
 
     {#each cards as card}
-      <Card column={id} {card} />
+      <div class="flex flex-row">
+        <Card column={id} {card} />
+        <button
+          class="text-white text-xs	 bg-red-500"
+          on:click={deleteCard(id, card)}
+        >
+          D
+        </button>
+      </div>
     {/each}
   </div>
   <slot />
