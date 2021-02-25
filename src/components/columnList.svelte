@@ -2,6 +2,7 @@
   import { flip } from 'svelte/animate'
   import Column from './column.svelte'
   import { board } from '../store/board.store'
+  import {addCard} from '../actions/card'
 
 </script>
 
@@ -11,7 +12,9 @@
       {index}
       id={column.id}
       title={column.title}
+      colour={column.bgColor}
       cards={column.cards}
+      on:cardAdded={addCard}
     />
   </div>
 {/each}
