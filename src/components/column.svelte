@@ -25,16 +25,19 @@
       card: card,
     })
   }
+  /**
+   * Gets a colour from the store in both light and dark modes. 
+   * @TODO what about contrast in some custom colours ? 
+   *  @type {{light:string, dark:string}}
+   * */
+  export let colour 
 </script>
 
 <div
   id={index}
-  class="grid flex-shrink-0 w-64 h-full grid-cols-1 p-2 space-y-2 text-center border-2 rounded cursor-move select-none border-secondary-900 bg-primary-100 dark:bg-primary-800 dark:border-primary-200"
-  use:draggable
+  class={`grid flex-shrink-0 w-64 h-full grid-cols-1 p-2 space-y-2 text-center ${colour.light} border-2 border-black rounded cursor-move select-none dark:${colour.dark} dark:border-white`}
+  use:draggable={{handle:'handle', component:'column', id:id}}
   transition:fly={{ x: -100 }}
-  on:over
-  on:dragged
-  on:dropped
 >
   <div>
     <div class="flex self-start w-full mb-2 space-x-2">
@@ -114,3 +117,8 @@
   </div>
   <slot />
 </div>
+<style>
+  .moved{
+    transform: translateX('100px');
+  }
+</style>

@@ -12,6 +12,7 @@
       id: uuid(),
       title: newCardTitle,
     }
+    console.log(card)
     dispatch('add', { card: card })
   }
 
