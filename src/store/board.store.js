@@ -1,13 +1,14 @@
 //@ts-check
-import { writable, get, derived } from 'svelte/store'
-import { persistedStore } from '../services/localStorage'
+import {get, derived, Writable} from 'svelte/store'
+import {persistedStore} from '../services/localStorage' 
 /**
  * @typedef {Object} CardModel
  * 
  * @typedef {Object} ColumnModel
  * @property {number} id
  * @property {string} title
- * @property {Array<CardModel>} cards 
+ * @property {Array<CardModel>} cards
+ * @property {{dark:string, light:string}} bgColor 
  */
 
 /** @type {Writable<ColumnModel[]>} */
@@ -19,15 +20,18 @@ export const lastId = derived(board, ($board, set) => {
     } else set(0)
 }, 0)
 /**
- * 
- * 
+ * Get the empty column model
  * @returns {ColumnModel} 
  */
 function getEmptyColumn() {
     return ({
-        id: get(lastId),
-        title: 'Edit Column Title',
-        cards: []
+        id:get(lastId),
+        title:'Edit Column Title',
+        cards:[],
+        bgColor:{
+            dark:'bg-gray-800',
+            light:'bg-gray-100'
+        }
     })
 }
 
@@ -36,9 +40,6 @@ export function addKanbanColumn() {
         const column = getEmptyColumn()
         return [...state, column]
     })
-}
-export function reverseState() {
-    board.update(state => state.reverse())
 }
 /**
  * Changes the column position in the store array
@@ -55,8 +56,21 @@ export function changePosition(oldIndex, newIndex) {
     }
 
 }
-export function deleteKanbanColumn(id) {
-    board.update((state) => state.filter(column => column.id !== id))
+function getIndexFromId(id){
+    const index = get(board).findIndex(element=>element.id === id)
+    if(index !== -1){
+        return index
+    }else {
+        console.error('INDEX NOT FOUND')
+        return undefined
+    }
+}
+export function changePositionByIds(sourceId, targetId){
+    //Need to determine it's indexes and call changeposition
+    changePosition(getIndexFromId(sourceId), getIndexFromId(targetId))
+}
+export function deleteKanbanColumn(id){
+    board.update((state)=>state.filter(column=>column.id!==id))
 }
 /**
  * Change the title of the column

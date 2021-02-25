@@ -1,88 +1,75 @@
-import {spring} from 'svelte/motion'
+import { 
+    dragState,
+    registerDraggable,
+    unregister,
+    setDrag,
+    isEnoughElementsToDrag, 
+    getTargetElements,
+    getDraggedElement,
+     } from '../store/drag.store'
+import {changePositionByIds} from '../store/board.store'
+import { get } from 'svelte/store'
 /**
  * 
  * @typedef {Object} ActionReturn
  * @property {()=>void=} destroy 
- * @property {(props:any)=>void=} update method will be called whenever that parameter changes
+ * @property {(props:any)=>void=} update method, it will be called whenever that parameter changes
  * 
- * @param {HTMLElement} node Element where the action is applied
- * @param {any} props Addtional parameters passed to action, using use:action={props}
+ *  
+ * 
+ * @param {HTMLElement} node
+ * @param {{handle:HTMLElement, component:string}} props
  * @returns {ActionReturn | void} 
  * 
  */
-export function draggable(node, props ) {
-    let clientMousePosition = {x:0,y:0}
-    let originalNodeRect = undefined
 
-    const wobblingEffect = spring(0,{
-        stiffness:0.03,
-        damping:0.21
-    })
-    const nodePosition = spring({
-        top:node.getBoundingClientRect().top,left:node.getBoundingClientRect().left, height:node.getBoundingClientRect().height
-    })
-    const destroyMoving = nodePosition.subscribe((value)=>{
-        if(node.style.position === 'fixed'){
-            node.style.top = value.top+'px'
-            node.style.left = value.left+'px'
-            node.style.height = value.height+'px'
+export function draggable(node, { handle, component, id }) {
+    registerDraggable(node, component, id)
+    node.draggable = true
+    /**
+     * Starting to drag
+     * @param {DragEvent} event 
+     */
+    function dragStartHandler(event) { 
+        event.stopImmediatePropagation()
+        if (!isEnoughElementsToDrag()) {
+            event.preventDefault()
+            return false
+        }else {
+            console.log(event.currentTarget)
+            setDrag(component, id, true)
         }
-    })
-    const destroyWobbling = wobblingEffect.subscribe((value)=>{
-        node.style.transform = `translate3d(${value}px,0,0) rotate3d(1,1,-2,${value}deg)`
-    })
-    //node.setAttribute('draggable', 'true')
-    /** @param {MouseEvent} event */
-    function mouseDownHandler(event){
-        clientMousePosition.x = event.clientX
-        clientMousePosition.y = event.clientY
-        originalNodeRect = node.getBoundingClientRect()
-        nodePosition.set({top:originalNodeRect.top, left:originalNodeRect.left, height:originalNodeRect.height}, {hard:true})
-        
-        window.addEventListener('mousemove', mouseMoveHandler)
-        window.addEventListener('mouseup', mouseUpHandler)
     }
-    /** @param {MouseEvent} event */
-    function mouseMoveHandler(event){
-        node.style.zIndex = '100'
-        node.style.pointerEvents = "none"
-        node.style.position = "fixed"
-        node.dispatchEvent(new CustomEvent('dragged', {detail:{index:node.id}}))
-        const dx = event.clientX - clientMousePosition.x 
-		const dy = event.clientY - clientMousePosition.y
-        const siblingOver = document.elementFromPoint(event.clientX, event.clientY)
-        siblingOver?.dispatchEvent(new CustomEvent("over", {detail:{
-            id:+siblingOver.id,
-            direction : dx<0?'left':'right'
-        }}))
-        nodePosition.update((position)=>({
-            top:position.top + dy,
-            left:position.left + dx,
-            height:position.height
-        }))
-        wobblingEffect.set(-dx)
-		clientMousePosition.x = event.clientX
-		clientMousePosition.y = event.clientY
-       
+    function dragEndHandler(event) {
+        const state = get(dragState)
+        changePositionByIds(state.draggedId,state.targetId)
+        setDrag(component, id, false)
     }
-    function mouseUpHandler(){
-        
-        node.style.pointerEvents = "initial"
-        node.style.zIndex = 'initial'
-        node.style.position = 'initial'
-        //originalNodeRect = node.getBoundingClientRect()
-        nodePosition.set({top:originalNodeRect.top, left:originalNodeRect.left, height:originalNodeRect.height},{hard:true})
-        node.dispatchEvent(new CustomEvent('dragged', {detail:{index:null}}))
-        node.dispatchEvent(new CustomEvent('dropped', {detail:node.id}))
-        wobblingEffect.set(0, {hard:true})
-        window.removeEventListener('mousemove', mouseMoveHandler)
-        window.removeEventListener('mouseup', mouseUpHandler);
-    }
-    node.addEventListener('mousedown', mouseDownHandler, false)
-    return ({
-        destroy: ()=>{
-            destroyWobbling()
-            destroyMoving()
+    function isDragValid(event){
+        const possibleTargets = getTargetElements(component).map(element => element.elementRef)
+        const dragged = getDraggedElement(component)
+        if(possibleTargets.includes(event.currentTarget) && dragged.id !== id ){
+            event.preventDefault()
+            dragState.update(state=>{
+                return ({
+                    ...state,
+                    targetId:id
+                })
+            })
         }
-    })
+    }
+    //drag end means user released the mouse button
+    node.addEventListener('dragend', dragEndHandler)
+    //drag start is required for the drag actions
+    node.addEventListener('dragstart', dragStartHandler, false)
+    node.addEventListener('dragenter', e=>isDragValid(e))
+    node.addEventListener('dragover', e=>isDragValid(e))
+    return {
+        update: () => { },
+        destroy: () => {
+            node.removeEventListener('dragstart', dragStartHandler)
+            unregister(component, id)
+        }
+    }
+    //node.addEventListener()
 }
