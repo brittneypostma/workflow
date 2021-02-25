@@ -1,11 +1,15 @@
 <script>
   import { flip } from 'svelte/animate'
   import Column from './column.svelte'
+  import CardTray from './cardTray.svelte'
   import DragTarget from './dragTarget.svelte'
   import ColumnSkeleton from './columnSkeleton.svelte'
   import { board, changePosition } from '../store/board.store'
-  import { addCard, deleteCard } from '../actions/card'
+  import { addCard, deleteCard, updateCard } from '../actions/card'
   let isDragged
+  let selection
+  const selectTask = (event) => (selection = event.detail)
+  const deselectTask = (event) => (selection = null)
   let dragEvent = {
     index: undefined,
     direction: undefined,
@@ -23,6 +27,11 @@
       direction: undefined,
     }
   }
+
+  function save(event, callback) {
+    callback(event)
+    deselectTask(event)
+  }
 </script>
 
 {#each $board as column, index (column.id)}
@@ -34,6 +43,7 @@
       on:dropped={dropHandler}
       on:over={overHandler}
       on:cardAdded={addCard}
+      on:taskSelected={selectTask}
       {index}
       id={column.id}
       title={column.title}
@@ -43,6 +53,19 @@
     <ColumnSkeleton {isDragged} {index} />
   </div>
 {/each}
+{#if selection}
+  <CardTray
+    on:trayClosed={deselectTask}
+    on:cardUpdated={(event) => save(event, updateCard)}
+    on:cardRemoved={(event) => {
+      // deleteCard(columnId, cardId);
+      deleteCard(event.detail.column, event.detail.id)
+      deselectTask(event) /* Close card tray */
+    }}
+    {...selection}
+    {board}
+  />
+{/if}
 
 <style>
 </style>

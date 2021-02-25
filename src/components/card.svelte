@@ -8,13 +8,14 @@
   function select() {
     dispatch('taskSelected', {
       column: column,
-      task: task,
+      card: card,
     })
   }
 </script>
 
 <div
   draggable="true"
+  on:click={select}
   class="bg-white flex-1 rounded box-border border-2 border-gray-200 hover:border-black text-gray-600 hover:text-black hover:shadow p-2 select-none cursor-move"
 >
   <div class="font-bold">{card.title}</div>
