@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte'
   import Button from './button.svelte'
 
-  // export let board /* to display every columns in a dropdown */
+
   export let column
   export let card
 
@@ -17,7 +17,7 @@
     }
 
     dispatch('cardUpdated', {
-      column: column,
+      column,
       card: {
         id: card.id,
         title: cardTitle,
@@ -27,7 +27,7 @@
 
   function remove() {
     dispatch('cardRemoved', {
-      column: column,
+      column,
       id: card.id,
     })
   }
@@ -49,15 +49,6 @@
       class="p-2 rounded bg-gray-200 text-gray-800	"
     />
   </div>
-  <!-- Change columns of cards by choosing column from a dropdown -->
-  <!-- <div class="flex flex-col space-y-1">
-    <label for="status" class="text-sm">Status</label>
-    <select id="status" bind:value={column} class="p-2 rounded">
-      {#each $board as column, id}
-        <option value={id}>{column.title}</option>
-      {/each}
-    </select>
-  </div> -->
   <div class="flex flex-row space-x-3">
     <Button on:click={save} color="green" class="flex-1">Save</Button>
     <Button on:click={close} color="yellow" class="flex-1">Cancel</Button>
