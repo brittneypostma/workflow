@@ -109,7 +109,7 @@
         <button
           class="text-white text-xs	 bg-red-500"
           on:click={deleteCard(id, card.id)}
-          ><!-- deleteCard(columnID, cardID) -->
+          >
           D
         </button>
       </div>
