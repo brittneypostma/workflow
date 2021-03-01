@@ -24,7 +24,7 @@
 <div class="flex flex-col space-y-3">
   <input
     bind:value={newCardTitle}
-    class="rounded p-2"
+    class="p-2 rounded dark:placeholder-black dark:text-black"
     placeholder="Give it a title..."
   />
   <div class="flex flex-row space-x-3">

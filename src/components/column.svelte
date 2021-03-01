@@ -35,11 +35,10 @@
 
 <div
   id={index}
-  class={`grid flex-shrink-0 w-64 h-full grid-cols-1 p-2 space-y-2 text-center ${colour.light} border-2 border-black rounded cursor-move select-none dark:${colour.dark} dark:border-white`}
+  class={`grid content-start flex-shrink-0 w-64 h-full grid-cols-1 p-2 space-y-2 text-center ${colour.light} border-2 border-black rounded cursor-move select-none dark:${colour.dark} dark:border-white`}
   use:draggable={{handle:'handle', component:'column', id:id}}
   transition:fly={{ x: -100 }}
 >
-  <div>
     <div class="flex self-start w-full mb-2 space-x-2">
       <input
         on:mousedown|stopPropagation
@@ -98,7 +97,7 @@
     </button>
 
     {#if addingCard}
-      <div class="h-full px-4 flex flex-col space-y-3">
+      <div class="flex flex-col h-full px-4 space-y-3">
         <CardAdder on:add={add} on:cancel={() => (addingCard = false)} />
       </div>
     {/if}
@@ -107,7 +106,7 @@
       <div class="flex flex-row">
         <Card on:taskSelected column={id} {card} />
         <button
-          class="text-white text-xs	 bg-red-500"
+          class="text-xs text-white bg-red-500"
           on:click={deleteCard(id, card.id)}
           >
           D
@@ -116,7 +115,6 @@
     {/each}
   </div>
   <slot />
-</div>
 <style>
   .moved{
     transform: translateX('100px');
