@@ -8,8 +8,8 @@ import { draggable } from '../actions/draggable';
   const dispatch = createEventDispatcher()
   function select() {
     dispatch('taskSelected', {
-      column: column,
-      card: card,
+      column,
+      card,
     })
   }
 </script>
