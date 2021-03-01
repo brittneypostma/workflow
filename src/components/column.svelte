@@ -105,11 +105,11 @@
 
     {#each cards as card}
       <div class="flex flex-row">
-        <Card column={id} {card} />
+        <Card on:taskSelected column={id} {card} />
         <button
           class="text-white text-xs	 bg-red-500"
-          on:click={deleteCard(id, card)}
-        >
+          on:click={deleteCard(id, card.id)}
+          >
           D
         </button>
       </div>
