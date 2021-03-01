@@ -10,8 +10,8 @@ export function addCard(event) {
 
 export function deleteCard(columnId, cardId) {
     board.update(columns => columns.map(column => {
-        if(column.id == columnId) {
-            column.cards = column.cards.filter(c => c.id != cardId);
+        if(column.id === columnId) {
+            column.cards = column.cards.filter(c => c.id !== cardId);
         }
         return ({ ...column })
     }))
