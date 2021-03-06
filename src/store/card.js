@@ -1,7 +1,5 @@
-import {board} from "../store/board.store"
-export function addCard(event) {
-    const { column: columnId, card } = event.detail
-    console.log(event)
+import {board} from "./board.store"
+export function addCard(columnId, card) {
     board.update(state => state.map(column => {
         column.id === columnId && column.cards.push(card);
         return ({ ...column })
