@@ -2,8 +2,8 @@
   import { flip } from 'svelte/animate'
   import Column from './column.svelte'
   import CardTray from './cardTray.svelte'
-  import { board} from '../store/board.store'
-  import { addCard, deleteCard, updateCard } from '../actions/card'
+  import { board } from '../store/board.store'
+  import { deleteCard, updateCard } from '../store/card'
   let selection
   const selectTask = (event) => (selection = event.detail)
   const deselectTask = (event) => (selection = null)
@@ -22,7 +22,6 @@
       title={column.title}
       colour={column.bgColor}
       cards={column.cards}
-      on:cardAdded={addCard}
     />
   </div>
 {/each}

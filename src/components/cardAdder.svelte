@@ -1,10 +1,11 @@
 <script>
   import { createEventDispatcher } from 'svelte'
   import { v4 as uuid } from 'uuid'
+  import { addCard } from '../store/card'
   import Button from './button.svelte'
 
   const dispatch = createEventDispatcher()
-
+  export let columnId
   let newCardTitle = ''
 
   function add() {
@@ -12,8 +13,8 @@
       id: uuid(),
       title: newCardTitle,
     }
-    console.log(card)
-    dispatch('add', { card: card })
+    addCard(columnId, card)
+    dispatch('cancel') //close 'cardAdder' after adding the card.
   }
 
   function cancel() {
