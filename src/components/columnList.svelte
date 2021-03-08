@@ -2,8 +2,8 @@
   import { flip } from 'svelte/animate'
   import Column from './column.svelte'
   import CardTray from './cardTray.svelte'
-  import { board } from '../store/board.store'
-  import { deleteCard, updateCard } from '../store/card'
+  import { boardStore } from '../store/board.store'
+  import { addCard, deleteCard, updateCard } from '../actions/card'
   let selection
   const selectTask = (event) => (selection = event.detail)
   const deselectTask = (event) => (selection = null)
@@ -13,7 +13,7 @@
   }
 </script>
 
-{#each $board as column, index (column.id)}
+{#each $boardStore as column, index (column.id)}
   <div animate:flip={{ duration: 200 }}>
     <Column
       on:taskSelected={selectTask}
@@ -35,6 +35,6 @@
       deselectTask(event) /* Close card tray */
     }}
     {...selection}
-    {board}
+    board={boardStore}
   />
 {/if}

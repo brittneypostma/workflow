@@ -1,13 +1,10 @@
 <script>
   import { createEventDispatcher } from 'svelte'
   import Button from './button.svelte'
-
-
   export let column
   export let card
 
   let cardTitle = card.title
-
   const dispatch = createEventDispatcher()
 
   function save() {

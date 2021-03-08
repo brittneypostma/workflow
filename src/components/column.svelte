@@ -1,12 +1,12 @@
 <script>
   import { fly } from 'svelte/transition'
   import { createEventDispatcher } from 'svelte'
-  import { deleteKanbanColumn, editColumnName } from '../store/board.store'
+  import { boardStore } from '../store/board.store'
   import { draggable } from '../actions/draggable'
   import CardAdder from './cardAdder.svelte'
   import Card from './card.svelte'
-  import { deleteCard } from '../store/card'
-
+  import { deleteCard } from '../actions/card'
+  const { editColumnName, deleteKanbanColumn } = boardStore
   export let index
   export let id
   export let title
@@ -18,10 +18,11 @@
   let addingCard = false
 
   /**
-   * Gets a colour from the store in both light and dark modes.
+   * Gets a color from the store in both light and dark modes.
    * @TODO what about contrast in some custom colours ?
    *  @type {{light:string, dark:string}}
    * */
+  export let color
 </script>
 
 <div
