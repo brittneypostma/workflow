@@ -1,10 +1,11 @@
 <script>
+  import { getContext } from 'svelte'
   import { flip } from 'svelte/animate'
-  import Column from './column.svelte'
-  import CardTray from './cardTray.svelte'
-  import { boardStore } from '../store/board.store'
-  import { addCard, deleteCard, updateCard } from '../actions/card'
+
+  import CardTray from '../Card/cardTray.svelte'
+  import { deleteCard, updateCard, cardsStore } from '../../store/card.store'
   let selection
+  const boardStore = getContext('boardStore')
   const selectTask = (event) => (selection = event.detail)
   const deselectTask = (event) => (selection = null)
   function save(event, callback) {
@@ -15,14 +16,7 @@
 
 {#each $boardStore as column, index (column.id)}
   <div animate:flip={{ duration: 200 }}>
-    <Column
-      on:taskSelected={selectTask}
-      {index}
-      id={column.id}
-      title={column.title}
-      colour={column.bgColor}
-      cards={column.cards}
-    />
+    <slot {column} {index} />
   </div>
 {/each}
 {#if selection}
@@ -35,6 +29,5 @@
       deselectTask(event) /* Close card tray */
     }}
     {...selection}
-    board={boardStore}
   />
 {/if}

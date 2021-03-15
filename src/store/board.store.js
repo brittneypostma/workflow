@@ -2,12 +2,10 @@
 import { get, derived, Writable } from 'svelte/store'
 import { persistedStore } from '../services/localStorage'
 /**
- * @typedef {Object} CardModel
  * 
  * @typedef {Object} ColumnModel
  * @property {number} id
  * @property {string} title
- * @property {Array<CardModel>} cards
  * @property {{dark:string, light:string}} bgColor 
  */
 
@@ -28,7 +26,6 @@ function getEmptyColumn() {
     return ({
         id: get(lastId),
         title: 'Edit Column Title',
-        cards: [],
         bgColor: {
             dark: 'bg-gray-800',
             light: 'bg-gray-100'
