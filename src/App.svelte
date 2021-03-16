@@ -18,10 +18,10 @@
   <Layout>
     <!-- This is the main content of the page -->
     <Board>
-      <List let:item={column} let:index items={boardStore}>
-        <Column on:taskSelected {index} data={column}>
+      <List let:item={column} items={boardStore}>
+        <Column data={column}>
           <CardAdder columnId={column.id} on:addCard={cardActions.add} />
-          <List items={selector(column.id)} let:index let:item={card}>
+          <List items={selector(column.id)} let:item={card}>
             <Card
               {card}
               on:select={(e) => console.log(e)}

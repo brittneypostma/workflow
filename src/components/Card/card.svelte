@@ -8,7 +8,6 @@
 </script>
 
 <div
-  draggable="true"
   on:click={(e) => dispatch('select', { cardId: card.id })}
   id={card.id}
   use:draggable={{ handle: 'handle', component: 'card', id: card.id }}

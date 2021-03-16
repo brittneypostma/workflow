@@ -6,15 +6,14 @@ import {
     isEnoughElementsToDrag,
     getTargetElements,
     getDraggedElement,
+    changePosition
 } from '../store/drag.store'
-import { boardStore } from '../store/board.store'
 import { get } from 'svelte/store'
-const { changePositionByIds } = boardStore
 /**
  * 
  * @typedef {Object} ActionReturn
- * @property {()=>void=} destroy 
- * @property {(props:any)=>void=} update method, it will be called whenever that parameter changes
+ * @property {()=>void} destroy 
+ * @property {(props:any)=>void} update method, it will be called whenever that parameter changes
  * 
  *  
  * 
@@ -32,29 +31,28 @@ export function draggable(node, { handle, component, id }) {
      * @param {DragEvent} event 
      */
     function dragStartHandler(event) {
-        event.stopImmediatePropagation()
+        event.stopPropagation()
+
         if (!isEnoughElementsToDrag()) {
             event.preventDefault()
             return false
         } else {
-            console.log(event.currentTarget)
             setDrag(component, id, true)
         }
     }
-    function dragEndHandler(event) {
+    function dragEndHandler() {
         const state = get(dragState)
-        changePositionByIds(state.draggedId, state.targetId)
+        changePosition(component, state.draggedId, state.targetId)
         setDrag(component, id, false)
     }
     function isDragValid(event) {
         const possibleTargets = getTargetElements(component).map(element => element.elementRef)
-        const dragged = getDraggedElement(component)
-        if (possibleTargets.includes(event.currentTarget) && dragged.id !== id) {
+        if (possibleTargets.includes(event.target)) {
             event.preventDefault()
             dragState.update(state => {
                 return ({
                     ...state,
-                    targetId: id
+                    targetId: event.target.id
                 })
             })
         }

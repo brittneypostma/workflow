@@ -1,24 +1,24 @@
-import { board } from "./board.store"
+
 import { persistedStore } from '../services/localStorage'
-import { get, readable } from 'svelte/store'
+import { readable } from 'svelte/store'
+import { validate } from 'uuid'
 /**
  * @typedef Card
  * @property {string} id
  * @property {'text'|'other'} cardType
  * @property {string} title
  * @property {any} body
+ * @property {number} columnId
  * 
  */
 
-/** @type {import("svelte/store").Writable<Record<number, Card[]>>} */
-export const cardsStore = persistedStore({}, 'cardsStore')
+/** @type {import("svelte/store").Writable<Card[]>} */
+export const cardsStore = persistedStore([], 'cardsStore')
 
 export function selector(columnId) {
     return readable([], (set) => {
         const unSubscribe = cardsStore.subscribe(value => {
-            if (value[columnId]) {
-                set(value[columnId])
-            }
+            set(value.filter(card => card.columnId === columnId))
         })
         return () => unSubscribe()
     })
@@ -30,20 +30,9 @@ export function selector(columnId) {
  * @param {number} columnId
  * @param {Card} card
  */
-export function addCard(columnId, card) {
+export function addCard(card) {
     cardsStore.update(state => {
-        if (state[columnId]) {
-            const newState = {
-                ...state,
-                [columnId]: [...state[columnId], card]
-            }
-            return newState
-        } else {
-            return ({
-                ...state,
-                [columnId]: [card]
-            })
-        }
+        return [...state, card]
     })
 }
 /**
@@ -55,33 +44,45 @@ export function addCard(columnId, card) {
  */
 export function deleteCard(cardId) {
     cardsStore.update(state => {
-        const updatedState = {}
-        for (const column in state) {
-            updatedState[column] = state[column].filter(card => card.id !== cardId)
-        }
-        return updatedState
+        return state.filter(card => card.id !== cardId)
     })
 }
-/**
- *
- *
- * @param {number} columnId
- */
-/////////// FUNCTION to update card
+
 export function updateCard(event) {
     const { column: columnId, card } = event.detail
-    board.update(state => state.map(column => {
-        if (column.id === columnId) {
-            column.cards.map(c => {
-                if (c.id === card.id) {
-                    c.title = card.title;
-                    // return c;
+    cardsStore.update(state => state.map(element => element))
+
+}
+
+export function changeCardPosition(sourceId, targetId) {
+    if (validate(targetId)) {
+        cardsStore.update(state => {
+            const targetIndex = state.findIndex(card => card.id === targetId)
+            const sourceCard = state.find(card => card.id === sourceId)
+            const targetCard = state.find(card => card.id === targetId)
+            const newState = state.filter(arrayElement => arrayElement.id !== sourceCard.id)
+            newState.splice(targetIndex, 0, sourceCard)
+            return newState.map(card => {
+                if (card.id === sourceId) {
+                    return ({
+                        ...card,
+                        columnId: targetCard.columnId
+                    })
                 }
+                return card
             })
-            return column;
-        }
-        else return column;
-    }))
-
-
+        })
+    } else {
+        cardsStore.update(state => {
+            return state.map(card => {
+                if (card.id === sourceId) {
+                    return ({
+                        ...card,
+                        columnId: +targetId
+                    })
+                }
+                return card
+            })
+        })
+    }
 }

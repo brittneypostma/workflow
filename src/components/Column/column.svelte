@@ -3,8 +3,6 @@
   import { getContext } from 'svelte'
   import { draggable } from '../../actions/draggable'
   import TrashIcon from '../../icons/trash.svelte'
-
-  export let index
   /**
    * Incoming data to the column
    * @type {{id:number, title:string, bgColor:string}}
@@ -15,14 +13,13 @@
 </script>
 
 <div
-  id={index}
+  {id}
   class={`grid content-start flex-shrink-0 w-64 h-full grid-cols-1 p-2 space-y-2 text-center ${color.light} border-2 border-black rounded cursor-move select-none dark:${color.dark} dark:border-white`}
   use:draggable={{ handle: 'handle', component: 'column', id: id }}
   transition:fly={{ x: -100 }}
 >
   <div class="flex self-start w-full mb-2 space-x-2">
     <input
-      on:dragstart|stopPropagation
       on:blur={(e) => editColumnName(id, e.target.value)}
       value={title}
       type="text"

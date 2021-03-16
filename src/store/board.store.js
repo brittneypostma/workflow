@@ -1,5 +1,5 @@
 //@ts-check
-import { get, derived, Writable } from 'svelte/store'
+import { get, derived } from 'svelte/store'
 import { persistedStore } from '../services/localStorage'
 /**
  * 
@@ -9,7 +9,7 @@ import { persistedStore } from '../services/localStorage'
  * @property {{dark:string, light:string}} bgColor 
  */
 
-/** @type {Writable<ColumnModel[]>} */
+/** @type {import("svelte/store").Writable<ColumnModel[]>} */
 export const board = persistedStore([], 'boardStore')
 const { subscribe } = board
 export const lastId = derived(board, ($board, set) => {
