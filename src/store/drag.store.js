@@ -1,5 +1,6 @@
-import { writable, derived, Writable, get } from 'svelte/store'
-import {board} from './board.store'
+import { writable, get } from 'svelte/store'
+import { boardStore } from './board.store'
+import { changeCardPosition } from './card.store'
 
 
 /**
@@ -11,13 +12,13 @@ import {board} from './board.store'
  */
 
 /**
- * @type {Writable<[DragStoreModel]>} 
+ * @type {import("svelte/store").Writable<DragStoreModel[]]>}
  */
 export const registeredDragElements = writable([])
 export const dragState = writable({
-    component:undefined,
-    draggedId:undefined,
-    targetId:undefined
+    component: undefined,
+    draggedId: undefined,
+    targetId: undefined
 })
 
 /**
@@ -39,7 +40,7 @@ export function registerDraggable(ref, componentType, id) {
 export function unregister(componentType, id) {
     registeredDragElements.update(state => {
         return state.filter(element => {
-            if(element.id === id && element.componentType === componentType){
+            if (element.id === id && element.componentType === componentType) {
                 return false
             }
             return true
@@ -48,33 +49,49 @@ export function unregister(componentType, id) {
     })
 }
 
-export function setDrag(componentType, id, isDragging){
-    registeredDragElements.update(state=>{
+export function setDrag(componentType, id, isDragging) {
+    registeredDragElements.update(state => {
         return state.map(element => {
-            if(element.id === id && element.componentType === componentType){
+            if (element.id === id && element.componentType === componentType) {
                 return ({
                     ...element,
                     isDragged: isDragging
                 })
-            }else return {...element}
+            } else return { ...element }
         })
     })
     dragState.set({
-        component:componentType,
-        draggedId:isDragging?id:undefined,
-        targetId:undefined
+        component: componentType,
+        draggedId: isDragging ? id : undefined,
+        targetId: undefined
     })
 }
-export function isEnoughElementsToDrag(component){
-    return get(registeredDragElements).length >=2
+export function isEnoughElementsToDrag(component) {
+    if (component === 'column') {
+        return get(registeredDragElements).length >= 2
+    }
+    return true
 }
-export function getTargetElements(component){
-    return get(registeredDragElements).filter(element=>
-        element.isDragged === false && element.componentType === component
+export function getTargetElements(component) {
+    const targetMap = {
+        'column': 'column',
+        'card': 'column' || 'card'
+    }
+    return get(registeredDragElements).filter(element =>
+        element.isDragged === false
     )
 }
-export function getDraggedElement(component){
-    return get(registeredDragElements).find(element=>
+export function getDraggedElement(component) {
+    return get(registeredDragElements).find(element =>
         element.isDragged === true && element.componentType === component
     )
+}
+export function changePosition(component, source, target) {
+    if (component === "column" && source && target) {
+        boardStore.changePositionByIds(source, +target)
+    }
+    if (component === "card" && source && target) {
+        changeCardPosition(source, target)
+    }
+
 }

@@ -1,19 +1,19 @@
-import { 
+import {
     dragState,
     registerDraggable,
     unregister,
     setDrag,
-    isEnoughElementsToDrag, 
+    isEnoughElementsToDrag,
     getTargetElements,
     getDraggedElement,
-     } from '../store/drag.store'
-import {changePositionByIds} from '../store/board.store'
+    changePosition
+} from '../store/drag.store'
 import { get } from 'svelte/store'
 /**
  * 
  * @typedef {Object} ActionReturn
- * @property {()=>void=} destroy 
- * @property {(props:any)=>void=} update method, it will be called whenever that parameter changes
+ * @property {()=>void} destroy 
+ * @property {(props:any)=>void} update method, it will be called whenever that parameter changes
  * 
  *  
  * 
@@ -30,30 +30,29 @@ export function draggable(node, { handle, component, id }) {
      * Starting to drag
      * @param {DragEvent} event 
      */
-    function dragStartHandler(event) { 
-        event.stopImmediatePropagation()
+    function dragStartHandler(event) {
+        event.stopPropagation()
+
         if (!isEnoughElementsToDrag()) {
             event.preventDefault()
             return false
-        }else {
-            console.log(event.currentTarget)
+        } else {
             setDrag(component, id, true)
         }
     }
-    function dragEndHandler(event) {
+    function dragEndHandler() {
         const state = get(dragState)
-        changePositionByIds(state.draggedId,state.targetId)
+        changePosition(component, state.draggedId, state.targetId)
         setDrag(component, id, false)
     }
-    function isDragValid(event){
+    function isDragValid(event) {
         const possibleTargets = getTargetElements(component).map(element => element.elementRef)
-        const dragged = getDraggedElement(component)
-        if(possibleTargets.includes(event.currentTarget) && dragged.id !== id ){
+        if (possibleTargets.includes(event.target)) {
             event.preventDefault()
-            dragState.update(state=>{
+            dragState.update(state => {
                 return ({
                     ...state,
-                    targetId:id
+                    targetId: event.target.id
                 })
             })
         }
@@ -62,8 +61,8 @@ export function draggable(node, { handle, component, id }) {
     node.addEventListener('dragend', dragEndHandler)
     //drag start is required for the drag actions
     node.addEventListener('dragstart', dragStartHandler, false)
-    node.addEventListener('dragenter', e=>isDragValid(e))
-    node.addEventListener('dragover', e=>isDragValid(e))
+    node.addEventListener('dragenter', e => isDragValid(e))
+    node.addEventListener('dragover', e => isDragValid(e))
     return {
         update: () => { },
         destroy: () => {

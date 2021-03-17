@@ -1,5 +1,10 @@
 <script>
-  import { addKanbanColumn } from '../store/board.store'
+  import { boardStore } from '../store/board.store'
+  import { cardsStore } from '../store/card.store'
+  import { setContext } from 'svelte'
+  setContext('cardsStore', cardsStore)
+  setContext('boardStore', boardStore)
+  const { addKanbanColumn } = boardStore
 </script>
 
 <div
