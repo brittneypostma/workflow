@@ -9,8 +9,10 @@ import { persistedStore } from '../services/localStorage'
  * @property {{dark:string, light:string}} bgColor 
  */
 
-/** @type {import("svelte/store").Writable<ColumnModel[]>} */
-export const board = persistedStore([], 'boardStore')
+/** @type {ColumnModel[]} */
+const initialColumns = []
+
+export const board = persistedStore(initialColumns, 'boardStore')
 const { subscribe } = board
 export const lastId = derived(board, ($board, set) => {
     if ($board.length > 0) {
@@ -20,7 +22,7 @@ export const lastId = derived(board, ($board, set) => {
 }, 0)
 /**
  * Get the empty column model
- * @returns {ColumnModel} 
+ * @return {ColumnModel} 
  */
 function getEmptyColumn() {
     return ({

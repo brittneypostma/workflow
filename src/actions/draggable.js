@@ -18,12 +18,11 @@ import { get } from 'svelte/store'
  *  
  * 
  * @param {HTMLElement} node
- * @param {{handle:HTMLElement, component:string}} props
+ * @param {{handle:HTMLElement, component:string, canDrag:boolean}} props
  * @returns {ActionReturn | void} 
  * 
  */
-
-export function draggable(node, { handle, component, id }) {
+export function draggable(node, { handle, component, id, canDrag = true }) {
     registerDraggable(node, component, id)
     node.draggable = true
     /**
@@ -64,7 +63,9 @@ export function draggable(node, { handle, component, id }) {
     node.addEventListener('dragenter', e => isDragValid(e))
     node.addEventListener('dragover', e => isDragValid(e))
     return {
-        update: () => { },
+        update: (props) => {
+            node.draggable = props.canDrag
+        },
         destroy: () => {
             node.removeEventListener('dragstart', dragStartHandler)
             unregister(component, id)

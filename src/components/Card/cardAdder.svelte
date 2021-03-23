@@ -25,7 +25,7 @@
 </script>
 
 <button
-  class="self-start w-full btn-primary"
+  class="self-start w-full bg-green-400 text-white dark:bg-green-600 dark:text-gray-400"
   on:click={() => {
     addingCard = true
   }}
@@ -40,17 +40,23 @@
     <input
       bind:value={title}
       type="text"
-      class="p-2 rounded dark:placeholder-black dark:text-black"
+      class="p-2 rounded dark:placeholder-black dark:text-black dark:bg-gray-400"
       placeholder="Give it a title..."
     />
     <textarea
       bind:value={body}
-      class="p-2 rounded dark:placeholder-black dark:text-black"
+      class="p-2 rounded dark:placeholder-black dark:text-black dark:bg-gray-400"
       placeholder="What is this card about ? "
     />
-    <div class="flex flex-row space-x-3">
-      <Button color="green" class="flex-1" on:click={add}>Add</Button>
-      <Button color="yellow" class="flex-1" on:click={cancel}>Cancel</Button>
+    <div class="flex flex-row space-x-3 dark:text-white">
+      <button
+        class="flex-1 rounded bg-green-200 dark:bg-green-600"
+        on:click={add}>Add</button
+      >
+      <button
+        class="flex-1 rounded bg-yellow-200 dark:bg-yellow-700"
+        on:click={cancel}>Cancel</button
+      >
     </div>
   </div>
 {/if}

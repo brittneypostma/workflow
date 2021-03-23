@@ -1,7 +1,7 @@
 <script>
   import { themeStore } from '../store/theme.store'
   import ToggleDarkMode from './darkModeToggleSwitch.svelte'
-
+  import { Item, Menu } from './DropMenu'
   const year = new Date().getFullYear()
 </script>
 
@@ -11,7 +11,6 @@
   <header>
     <ToggleDarkMode isDarkMode={$themeStore === 'dark'} />
   </header>
-
   <main>
     <slot />
   </main>
