@@ -2,7 +2,6 @@
   import { createEventDispatcher, getContext } from 'svelte'
   import { draggable } from '../../actions/draggable'
   import { Item, Menu } from '../DropMenu'
-  import DotsIcon from '../../icons/dots.svelte'
   export let card
   let canBeDragged = true
   const { setParentDraggable } = getContext('setParentDraggable')

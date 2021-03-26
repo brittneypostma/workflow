@@ -1,6 +1,7 @@
 <script>
   import { fly } from 'svelte/transition'
   import { getContext, setContext } from 'svelte'
+  import { Item, Menu as DropMenu } from '../DropMenu'
   import { draggable } from '../../actions/draggable'
   import TrashIcon from '../../icons/trash.svelte'
   /**
@@ -12,10 +13,10 @@
   const { editColumnName, deleteKanbanColumn } = getContext('boardStore')
   const { id, title, bgColor: color } = data
   let canDrag = true
-  function setParentDraggable(value) {
+  function changeDraggability(value) {
     canDrag = value
   }
-  setContext('setParentDraggable', { setParentDraggable })
+  setContext('setParentDraggable', { setParentDraggable: changeDraggability })
 </script>
 
 <div
@@ -24,7 +25,7 @@
   use:draggable={{ handle: 'handle', component: 'column', id, canDrag }}
   transition:fly={{ x: -100 }}
 >
-  <div class="flex self-start w-full mb-2 space-x-2">
+  <div class="flex flex-row w-full mb-2 space-x-1">
     <input
       on:blur={(e) => {
         editColumnName(id, e.target.value)
@@ -33,18 +34,14 @@
       on:focus={() => (canDrag = false)}
       value={title}
       type="text"
-      class="w-full overflow-hidden text-sm font-thin text-center bg-transparent border-b border-secondary-900 cursor-text focus:outline-none"
+      class="w-10/12 overflow-hidden text-sm font-thin text-center bg-transparent border-b border-secondary-900 cursor-text focus:outline-none"
     />
-    <!-- Delete column button, would like to remove id once bugs are fixed -->
-    <button
-      class="text-white bg-red-500"
-      on:click={() => deleteKanbanColumn(id)}
+    <DropMenu
+      on:menuToggled={(e) => changeDraggability(!e.detail.isMenuVisible)}
     >
-      <!-- Trash icon -->
-      <span class="flex items-center gap-2">
-        <TrashIcon />
-      </span>
-    </button>
+      <Item on:click={() => deleteKanbanColumn(id)}>Delete Column</Item>
+      <Item>Color Select</Item>
+    </DropMenu>
   </div>
   <slot />
 </div>

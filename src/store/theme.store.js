@@ -4,6 +4,12 @@ const themes = {
     dark: 'dark',
     light: 'light'
 }
+const customColors = {
+    yellow: ['bg-yellow-400', 'bg-yellow-600'],
+    green: [],
+    blue: [],
+
+}
 /**
  *
  *
